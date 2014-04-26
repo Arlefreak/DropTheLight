@@ -45,7 +45,7 @@
 				fill: "#0f0f0f",
 				align: "center"
 			});
-			this.textTut = game.add.text(game.world.centerX, 200 , "Use the arroy keys & press enter to start", {
+			this.textTut = game.add.text(game.world.centerX, 200 , "Use the arrow keys & press enter to start", {
 				font: "20px Source Code Pro",
 				fill: "#0f0f0f",
 				align: "center"
