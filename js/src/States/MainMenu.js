@@ -83,9 +83,11 @@
 		getScore: function(){
 			this.lastScore = localStorage.getItem('lastScore');
 			this.highScore = localStorage.getItem('highScore');
-			if (this.highScore === null){
-				this.highScore = this.lastScore;
-				localStorage.setItem('highScore', this.lastScore);
+			if (typeof(this.highScore) == 'undefined' || this.highScore == null || isNaN(this.highScore)){
+				this.highScore = 0;
+				this.lastScore = 0;
+				localStorage.setItem('highScore', this.highScore);
+				localStorage.setItem('lastScore', this.lastScore);
 			}
 			this.highScore = parseInt(this.highScore,10);
 			this.lastScore = parseInt(this.lastScore,10);

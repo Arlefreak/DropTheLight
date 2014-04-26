@@ -92,6 +92,19 @@
 			game.physics.enable(this.pipes, Phaser.Physics.ARCADE);
 			game.physics.enable(this.light, Phaser.Physics.ARCADE);
 			this.light.body.collideWorldBounds=true;
+
+			/* Particles */
+
+			this.emitter = game.add.emitter(game.world.centerX, game.world.centerY - 20,500,200);
+
+			this.emitter.makeParticles('particle');
+
+			this.emitter.setRotation(0, 0);
+			this.emitter.setAlpha(0.3, 0.8);
+			this.emitter.setScale(0.5, 1);
+			this.emitter.gravity = -200;
+
+			this.emitter.start(false, 5000, 100);
 		},
 
 		update: function() {
@@ -99,12 +112,14 @@
 			this.light.body.velocity.y = 0;
 			this.light.body.angularVelocity = 0;
 			this.updateShadowTexture();
+			this.emitter.x = this.light.body.x;
 			if (this.game.time.fps !== 0) {
 				this.fpsText.setText(this.game.time.fps + ' FPS');
 			}
 
 			if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || game.input.pointer1.isDown && game.input.pointer1.x < game.world.centerX)
 			{
+
 				this.light.body.velocity.x = -250;
 			}
 			else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)|| game.input.pointer1.isDown && game.input.pointer1.x > game.world.centerX)
@@ -143,7 +158,7 @@
 		pipe.checkWorldBounds = true;
 		pipe.body.velocity.y = -200; 
 		pipe.outOfBoundsKill = true;
-		
+
 		if (_move){
 			if(_direction){
 				pipe.body.velocity.x = - 100;

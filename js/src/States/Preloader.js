@@ -11,6 +11,7 @@
 			this.preloadBarBg = this.add.sprite(300, 400, 'loadingBG');
 			this.preloadBar = this.add.sprite(304, 405, 'loading');
 			this.load.setPreloadSprite(this.preloadBar);
+			this.load.image('particle', 'js/res/img/particle.png');
 		},
 		create: function() {
 			this.preloadBar.cropEnabled = false;
