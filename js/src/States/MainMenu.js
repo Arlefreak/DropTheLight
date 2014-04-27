@@ -5,10 +5,14 @@
 	Menu.prototype = {
 		create: function() {
 			game.stage.backgroundColor = '#fff';
-			this.LIGHT_RADIUS = 350;
+			this.LIGHT_RADIUS = gameWidth/2;
 			this.highScore = 0;
 			this.lastScore = 0;
 			this.getScore();
+
+			if(this.LIGHT_RADIUS > 400){
+				this.LIGHT_RADIUS = 400;
+			}
 
 			this.shadowTexture = this.game.add.bitmapData(this.game.width, this.game.height);
 			this.shadowTexture.context.fillStyle = 'rgb(0, 0, 0)';
@@ -40,33 +44,55 @@
 			this.lightSprite = game.add.image(0, 0, this.shadowTexture);
 			this.lightSprite.blendMode = Phaser.blendModes.MULTIPLY;
 
-			this.text = game.add.text(game.world.centerX, 150, "Drop the light", {
-				font: "30px Source Code Pro",
-				fill: "#0f0f0f",
-				align: "center"
-			});
-			this.textTut = game.add.text(game.world.centerX, 200 , "Use the arrow keys & press enter to start", {
-				font: "20px Source Code Pro",
-				fill: "#0f0f0f",
-				align: "center"
-			});
-			this.text.anchor.setTo(0.5, 0.5);
-			this.textTut.anchor.setTo(0.5, 0.5);
+			if (!this.game.device.desktop){
+				this.titleTxt = game.add.text(game.world.centerX, 50, "Drop the light", {
+					font: "20px Source Code Pro",
+					fill: "#f0f0f0",
+					align: "center"
+				});
+				this.tutorialTxt = game.add.text(game.world.centerX, 150 , "Tap the screen to start", {
+					font: "18px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "center"
+				});
+				this.scoreTxt = game.add.text(game.world.centerX, 200, " High Score: " + this.highScore + "\n Last Score: " + this.lastScore, {
+					font: "15px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "left"
+				});
 
-			this.scoreTxt = game.add.text(game.world.centerX, 250, " High Score: " + this.highScore + "\n Last Score: " + this.lastScore, {
-				font: "20px Source Code Pro",
-				fill: "#0f0f0f",
-				align: "left"
-			});
-			
+				this.creditsTxt = game.add.text(game.world.centerX, this.world.height - 20, " Made with Phaser by Arlefreak ", {
+					font: "15px Source Code Pro",
+					fill: "#ffffff",
+					align: "left"
+				});
+			}else{
+				this.titleTxt = game.add.text(game.world.centerX, 150, "Drop the light", {
+					font: "30px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "center"
+				});
+				this.tutorialTxt = game.add.text(game.world.centerX, 200 , "Use the arrow keys & press enter to start", {
+					font: "20px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "center"
+				});
+				this.scoreTxt = game.add.text(game.world.centerX, 250, " High Score: " + this.highScore + "\n Last Score: " + this.lastScore, {
+					font: "20px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "left"
+				});
+
+				this.creditsTxt = game.add.text(game.world.centerX, this.world.height - 20, " Made with Phaser by Arlefreak ", {
+					font: "14px Source Code Pro",
+					fill: "#ffffff",
+					align: "left"
+				});
+			}
+
+			this.titleTxt.anchor.setTo(0.5, 0.5);
+			this.tutorialTxt.anchor.setTo(0.5, 0.5);
 			this.scoreTxt.anchor.setTo(0.5, 0.5);
-
-			this.creditsTxt = game.add.text(game.world.centerX, this.world.height - 20, " Made with Phaser by Arlefreak ", {
-				font: "14px Source Code Pro",
-				fill: "#ffffff",
-				align: "left"
-			});
-			
 			this.creditsTxt.anchor.setTo(0.5, 0.5);
 		},
 

@@ -7,33 +7,54 @@
 			game.stage.backgroundColor = '#fff';
 			this.collided = false;
 			this.score = 0;
-			this.LIGHT_RADIUS = 350;
-			var highScore;
-			var lastScore;
+			this.LIGHT_RADIUS = gameWidth / 2;
+			this.highScore = 0;
+			this.lastScore = 0;
+			this.getScore();
+			var blockNumbers = Math.floor(gameWidth / 50 * 5) ;
+			if(this.LIGHT_RADIUS > 400){
+				this.LIGHT_RADIUS = 400;
+			}
 
-			lastScore = localStorage.getItem('lastScore');
-			highScore = localStorage.getItem('highScore');
 
 			// Show FPS
 			this.game.time.advancedTiming = true;
 
 
-			this.titleTxt = game.add.text(game.world.centerX, 150, "Drop the light", {
-				font: "30px Source Code Pro",
-				fill: "#0f0f0f",
-				align: "center"
-			});
-			this.tutorialTxt = game.add.text(game.world.centerX, 200 , "Use the arroy keys & press enter to start", {
-				font: "20px Source Code Pro",
-				fill: "#0f0f0f",
-				align: "center"
-			});
-			this.scoreTxt2 = game.add.text(game.world.centerX, 250, " High Score: " + highScore + "\n Last Score: " + lastScore, {
-				font: "20px Source Code Pro",
-				fill: "#0f0f0f",
-				align: "left"
-			});
-			
+			if (!this.game.device.desktop){
+				this.titleTxt = game.add.text(game.world.centerX, 50, "Drop the light", {
+					font: "20px Source Code Pro",
+					fill: "#f0f0f0",
+					align: "center"
+				});
+				this.tutorialTxt = game.add.text(game.world.centerX, 150 , "Tap the screen to start", {
+					font: "18px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "center"
+				});
+				this.scoreTxt2 = game.add.text(game.world.centerX, 200, " High Score: " + this.highScore + "\n Last Score: " + this.lastScore, {
+					font: "15px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "left"
+				});
+			}else{
+				this.titleTxt = game.add.text(game.world.centerX, 150, "Drop the light", {
+					font: "30px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "center"
+				});
+				this.tutorialTxt = game.add.text(game.world.centerX, 200 , "Use the arrow keys & press enter to start", {
+					font: "20px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "center"
+				});
+				this.scoreTxt2 = game.add.text(game.world.centerX, 250, " High Score: " + this.highScore + "\n Last Score: " + this.lastScore, {
+					font: "20px Source Code Pro",
+					fill: "#0f0f0f",
+					align: "left"
+				});
+			}
+
 			this.scoreTxt2.anchor.setTo(0.5, 0.5);
 			this.titleTxt.anchor.setTo(0.5, 0.5);
 			this.tutorialTxt.anchor.setTo(0.5, 0.5);
@@ -47,7 +68,7 @@
 			this.blockTexture = game.add.bitmapData(50,50);
 			this.blockTexture.context.fillStyle = 'rgba(0, 0, 0, 1.0)';
 			this.blockTexture.context.fillRect(0,0, 50, 50);
-			
+
 			this.bmdLight =  game.add.bitmapData(20, 20);
 			this.bmdLight.context.beginPath();
 			this.bmdLight.context.arc(10, 10 , 10, 0, 2 * Math.PI, false);
@@ -55,10 +76,11 @@
 			this.bmdLight.context.fill();
 
 			this.shadowTexture = this.game.add.bitmapData(this.game.width, this.game.height);
-			
+
+
 			/* Groups */
 			this.pipes = game.add.group();
-			this.pipes.createMultiple(60, this.blockTexture);
+			this.pipes.createMultiple(blockNumbers, this.blockTexture);
 
 			/* Sprites */
 
@@ -131,9 +153,24 @@
 
 		quitGame: function (state) {
 			localStorage.setItem('lastScore', this.score);
-			isMoving = false;
 			game.time.events.remove(this.timer);
 			game.state.start(state);
+		},
+		getScore: function(){
+			this.lastScore = localStorage.getItem('lastScore');
+			this.highScore = localStorage.getItem('highScore');
+			if (typeof(this.highScore) == 'undefined' || this.highScore == null || isNaN(this.highScore)){
+				this.highScore = 0;
+				this.lastScore = 0;
+				localStorage.setItem('highScore', this.highScore);
+				localStorage.setItem('lastScore', this.lastScore);
+			}
+			this.highScore = parseInt(this.highScore,10);
+			this.lastScore = parseInt(this.lastScore,10);
+			if(this.highScore < this.lastScore ){
+				this.highScore = this.lastScore;
+				localStorage.setItem('highScore', this.lastScore);
+			}
 		}
 	};
 
@@ -169,24 +206,38 @@
 	};
 
 	Play.prototype.addRowOfPipes = function() {
-		var hole = Math.floor(Math.random()*10)+1;
-		var secondHole = Math.floor(Math.random()*10)+1;
+		var blockNumbers = window.innerWidth / 50;
+		var randomNumber = Math.random() >= 0.5;
+		var holes = [];
 		var move;
+		var equealsHole = false;
+		var i = 0;
+
 		this.score += 1;
 		this.scoreTxt.setText(this.score);
 
+		for (i = blockNumbers/5; i > 0; i--){
+			holes.push (Math.floor(Math.random()*blockNumbers)+1);
+		}
+		console.log('holes size: ' + holes.length);
 		if (this.score % 50 === 0 && this.LIGHT_RADIUS !== 100){
-			this.LIGHT_RADIUS -= 50;
+			this.LIGHT_RADIUS -= 10;
 		}else if(this.score >= 10) {
 			move = true;
 		}
 
-		while(secondHole === hole){
-			secondHole = Math.floor(Math.random()*10)+1;
-		}
-		var randomNumber = Math.random() >= 0.5;
-		for (var i = 0; i < 17; i++){
-			if (i !== hole && i !== hole +1 && i !== secondHole && i !== secondHole + 1){
+		for (var i = 0; i < blockNumbers; i++){
+			var index;
+			equealsHole = false;
+			for (index = 0; index < holes.length; ++index) {
+				console.log('equealsHole1: ' + equealsHole);
+				console.log('i: ' + i, ' hole: ' +  holes[index]);
+				if (holes[index] === i || holes[index] + 1 === i){
+					equealsHole = true;
+				}
+			}
+			console.log('equealsHole2: ' + equealsHole);
+			if (!equealsHole){
 				this.addOnePipe(i*50, game.world.height , move, randomNumber);
 			}
 		}
