@@ -16,6 +16,8 @@
 				this.LIGHT_RADIUS = 400;
 			}
 
+			this.fx = game.add.audio('sfx');
+
 
 			// Show FPS
 			this.game.time.advancedTiming = true;
@@ -152,6 +154,7 @@
 		},
 
 		quitGame: function (state) {
+			this.fx.play('',0,1,false);
 			localStorage.setItem('lastScore', this.score);
 			game.time.events.remove(this.timer);
 			game.state.start(state);
