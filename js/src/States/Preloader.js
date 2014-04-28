@@ -9,7 +9,10 @@
 		preload: function() {
 			game.stage.backgroundColor = '#000';
 			this.preloadBarBg = this.add.sprite(game.world.centerX, game.world.centerY, 'loadingBG');
-			this.preloadBar = this.add.sprite(game.world.centerX + 4, game.world.centerY + 5, 'loading');
+			this.preloadBar = this.add.sprite(game.world.centerX + 4, game.world.centerY , 'loading');
+			this.preloadBarBg.anchor.setTo(0.5, 0.5);
+			this.preloadBar.anchor.setTo(0.5, 0.5);
+
 			game.load.audio('sfx', [ 'js/res/sound/die.mp3', 'js/res/sound/die.ogg' ]);
 			this.load.setPreloadSprite(this.preloadBar);
 			this.load.image('particle', 'js/res/img/particle.png');
