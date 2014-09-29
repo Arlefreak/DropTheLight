@@ -22,7 +22,7 @@ window.onload = function () {
 	gameWidth = window.innerWidth;
 	gameHeight = window.innerHeight;
 	game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameContainer');
-	
+
 	// Game States
 	game.state.add('boot', BootS);
 	game.state.add('preloader', PreloaderS);

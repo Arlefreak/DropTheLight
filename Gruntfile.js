@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 		dest: 'build/DropTheLight.js',             // destination directory or file
 		replacements: [{
 		    from: 'js/res/',                   // string replacement
-		    to: '/static/Games/DropTheLight/assets/'
+		    to: 'assets/'
 		}]
 	    }            
 	},  

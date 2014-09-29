@@ -14,6 +14,7 @@
 			this.preloadBar.anchor.setTo(0.5, 0.5);
 
 			game.load.audio('sfx', [ 'js/res/sound/die.mp3', 'js/res/sound/die.ogg' ]);
+			game.load.audio('soundtrack', [ 'js/res/sound/soundtrack.mp3', 'js/res/sound/soundtrack.ogg' ]);
 			this.load.setPreloadSprite(this.preloadBar);
 			this.load.image('particle', 'js/res/img/particle.png');
 		},

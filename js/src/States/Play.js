@@ -17,7 +17,8 @@
 			}
 
 			this.fx = game.add.audio('sfx');
-
+			this.fx = game.add.audio('soundtrack');
+			this.fx.play('',0,1,true);
 
 			// Show FPS
 			this.game.time.advancedTiming = true;
